@@ -1,0 +1,9 @@
+#!/usr/bin/make -f
+
+export DESTDIR=debian/squidanalyzer
+export BINDIR=/usr/bin
+export MANDIR=/usr/share/man
+export HTMLDIR=/var/lib/squidanalyzer
+
+%:
+	dh $@
