@@ -29,7 +29,7 @@ my $ETCDIR = $ENV{ETCDIR} || $CONFDIR;
 my $HTMLDIR = $ENV{HTMLDIR} || '/var/www/squidanalyzer';
 my $BASEURL = $ENV{BASEURL} || '/squidreport';
 my $DOCDIR = $ENV{DOCDIR} || '';
-my $MANDIR = $ENV{MANDIR} || '/usr/local/man/man3';
+my $MANDIR = $ENV{MANDIR} || '/usr/local/man';
 my $DESTDIR = $ENV{DESTDIR} || '';
 $ENV{INSTALLDIRS} ||= 'vendor';
 
@@ -52,7 +52,8 @@ test ! -d "$DESTDIR$DOCDIR" && mkdir -p $DESTDIR$DOCDIR
 }
 
 print INST qq{
-test ! -d "$DESTDIR$MANDIR" && mkdir -p $DESTDIR$MANDIR
+test ! -d "$DESTDIR$MANDIR/man1" && mkdir -p $DESTDIR$MANDIR/man1
+test ! -d "$DESTDIR$MANDIR/man3" && mkdir -p $DESTDIR$MANDIR/man3
 
 # Copy files that must not be overriden 
 for file in squidanalyzer.conf network-aliases user-aliases excluded included; do
@@ -75,7 +76,7 @@ install -m 644 resources/images/network.png $DESTDIR$HTMLDIR/images/
 install -m 644 resources/images/user.png $DESTDIR$HTMLDIR/images/
 install -m 644 lang/* $DESTDIR$ETCDIR/lang/
 pod2text doc/SquidAnalyzer.pod README
-pod2man doc/SquidAnalyzer.pod squid-analyzer.3
+pod2man doc/SquidAnalyzer.pod squid-analyzer.1
 };
 if ($DOCDIR ne '') {
         print INST qq{
@@ -86,7 +87,7 @@ if ($DOCDIR ne '') {
 }
 if ($MANDIR ne '') {
         print INST qq{
-	install -m 644 squid-analyzer.3 $DESTDIR$MANDIR/
+	install -m 644 squid-analyzer.1 $DESTDIR$MANDIR/man1
 };
 }
 
@@ -158,7 +159,7 @@ WriteMakefile(
 	'MAN3PODS'     => { 'doc/SquidAnalyzer.pod' => 'blib/man3/SquidAnalyzer.3pm' },
 	'DESTDIR'      => $ENV{DESTDIR},
 	'INSTALLDIRS'  => $ENV{INSTALLDIRS},
-	'clean'	       => { FILES => "install_all.sh lib/blib/ squid-analyzer.3" },
+	'clean'	       => { FILES => "install_all.sh lib/blib/ squid-analyzer.1" },
 	'META_MERGE'   => {
 		resources  => {
 			homepage => 'http://squidanalyzer.darold.net/',
